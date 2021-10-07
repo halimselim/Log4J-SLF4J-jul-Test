@@ -1,4 +1,4 @@
-package com.hubbox.logtest;
+package logtest;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
