@@ -18,10 +18,8 @@ public class LogTest {
         System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
         org.apache.logging.log4j.core.config.Configurator.setRootLevel(org.apache.logging.log4j.Level.INFO);
 
-        // logger_1 log4j
-        // logger_2 jul
-        org.apache.logging.log4j.core.Logger logger_1 = (org.apache.logging.log4j.core.Logger) (org.apache.logging.log4j.LogManager.getRootLogger());
-        java.util.logging.Logger logger_2 = java.util.logging.Logger.getLogger(LogTest.class.getName());
+        org.apache.logging.log4j.core.Logger log4j_logger = (org.apache.logging.log4j.core.Logger) (org.apache.logging.log4j.LogManager.getRootLogger());
+        java.util.logging.Logger jul_logger = java.util.logging.Logger.getLogger(LogTest.class.getName());
 
         class MockedAppender extends AbstractAppender {
 
@@ -57,11 +55,11 @@ public class LogTest {
         }
 
         //clear default logger
-        for (Appender a : logger_1.getAppenders().values()) {
-            logger_1.removeAppender(a);
+        for (Appender a : log4j_logger.getAppenders().values()) {
+            log4j_logger.removeAppender(a);
         }
 
-        logger_1.addAppender(new MockedAppender());
+        log4j_logger.addAppender(new MockedAppender());
 
         //j2mod is an example library that uses SLF4J
         com.ghgande.j2mod.modbus.facade.ModbusTCPMaster mm = new com.ghgande.j2mod.modbus.facade.ModbusTCPMaster("192.168.1.2");
@@ -73,8 +71,8 @@ public class LogTest {
             //jul is the default logging implementation used in my IDE (Netbeans)
             java.util.logging.Logger.getLogger(LogTest.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        logger_1.info("test finished 1");
-        logger_2.info("test finished 2");
+        log4j_logger.info("test finished 1");
+        jul_logger.info("test finished 2");
 
     }
 
